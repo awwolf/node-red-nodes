@@ -1,0 +1,1 @@
+# Ensures that the same topic/payload will not be sent again. Only when something else is sent, the previous topic/payload may be sent again.

@@ -1,0 +1,55 @@
+[
+    {
+        "id": "59a0d70b.96ab4",
+        "type": "subflow",
+        "name": "No Resend",
+        "info": "Sorgt dafür das gleicher Topic/Payload nur einmal gesendet werden\n\n",
+        "in": [
+            {
+                "x": 65,
+                "y": 75,
+                "wires": [
+                    {
+                        "id": "6ccd563f.34e668"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 380,
+                "y": 75,
+                "wires": [
+                    {
+                        "id": "6ccd563f.34e668",
+                        "port": 0
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "6ccd563f.34e668",
+        "type": "function",
+        "z": "59a0d70b.96ab4",
+        "name": "no Resend",
+        "func": "//Sorgt dafür das gleicher Topic/Payload nur einmal gesendet werden\n\n\nif ( (msg.payload === context.r_payload) && (msg.topic === context.r_topic))\n{\n    node.status({fill:\"yellow\",shape:\"ring\",text:\"No Resend\"});\n    return;\n}\ncontext.r_payload = msg.payload;\ncontext.r_topic = msg.topic;\nnode.status({fill:\"yellow\",shape:\"ring\",text:\"First Send\"});\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 220,
+        "y": 75,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "812597d0.2fd6a8",
+        "type": "subflow:59a0d70b.96ab4",
+        "z": "27a004cf.eac5fc",
+        "x": 1402.6519097222222,
+        "y": 223.81076388888889,
+        "wires": [
+            []
+        ]
+    }
+]

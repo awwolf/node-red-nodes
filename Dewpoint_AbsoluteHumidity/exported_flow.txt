@@ -1,0 +1,24 @@
+[
+    {
+        "id": "855d116c.b8243",
+        "type": "function",
+        "z": "b2c4da77.a97c58",
+        "name": "Dewpoint, Absolute Humidity",
+        "func": "context.T  = Number (context.T  || 0.00);\ncontext.rH = Number (context.rH || 0.00);\n\nif (msg.topic === 'T')  {context.T  = msg.payload; }\nif (msg.topic === 'rH') {context.rH = msg.payload; }\n\nvar T = Number(context.T);\nvar rH = Number(context.rH);\n\nvar mw = 18.016; //Modekulargewicht Wasser in kg/kmol\nvar R  = 8314.3; //Gaskonstante in J/(kmol*K)\n\nvar TK = T + 273.15; //Temperatur in Kelvin\n\n a = 7.5; \n b = 237.3;\n\nvar SDD = 6.1078 * Math.pow(10,((a*T)/(b+T))); //Sättigungsdampfdruck\nvar DD = rH/100 * SDD;   //Dampfdruck\nvar TP = 234.175*Math.log((DD)/6.1078)/(17.08085-Math.log((DD)/6.1078));\nvar AF = Math.pow(10,5)*mw/R * DD/TK;\n\nTP = Math.round(TP*10)/10;\nAF = Math.round(AF*10)/10;\n\nvar msg1 = {payload: TP};\nvar msg2 = {payload: AF};\n\nnode.status({fill:\"green\",shape:\"ring\",text:\"DP=\" + TP + \"°C | AF=\" + AF + \"g/m²\"});\nif (T > -100.00 && rH > -100.00) \n{return [msg1,msg2];}\nelse\n{ node.status({fill:\"red\",shape:\"dot\",text:\"no data\"}); }\n  ",
+        "outputs": "2",
+        "noerr": 0,
+        "x": 1135.295181274414,
+        "y": 594.1665945053101,
+        "wires": [
+            [],
+            []
+        ],
+        "inputLabels": [
+            "T, rH"
+        ],
+        "outputLabels": [
+            "DewPoint",
+            "Absolute Humidity"
+        ]
+    }
+]
